@@ -1032,8 +1032,8 @@ class Securimage
             $code = '';
         }
 
-        $this->code_entered = $code;
-        $this->correct_code = false;
+        $code_entered = $code;
+        $correct_code = false;
         $this->code         = null;
 
         if (empty($captchaId)) {
@@ -1070,13 +1070,13 @@ class Securimage
             );
         }
 
-        if ($this->correct_code === false && $alwaysDelete) {
+        if ($correct_code === false && $alwaysDelete) {
             // clear code from storage after use
             // if correct_code === true, it has already been deleted
             $this->deleteData($captchaId);
         }
 
-        return $this->correct_code;
+        return $correct_code;
     }
 
     /**
@@ -2377,8 +2377,8 @@ class Securimage
             $this->case_sensitive = true;
         }
 
-        $code_entered = trim( (($this->case_sensitive) ? $this->code_entered
-                                                       : strtolower($this->code_entered))
+        $code_entered = trim( (($this->case_sensitive) ? $code_entered
+                                                       : strtolower($code_entered))
                         );
         $this->correct_code = false;
 
