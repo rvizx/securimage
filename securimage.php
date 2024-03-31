@@ -674,6 +674,13 @@ class Securimage
     protected $gdlinecolor;
 
     /**
+     * The GD color for the noise color
+     *
+     * @var int
+     */
+    protected $gdnoisecolor;
+
+    /**
      * The GD color for the signature text color
      *
      * @var int
@@ -1980,15 +1987,15 @@ class Securimage
         $amp      = array(); // amplitude
         $x        = ($this->image_width / 4); // lowest x coordinate of a pole
         $maxX     = $this->image_width - $x;  // maximum x coordinate of a pole
-        $dx       = mt_rand($x / 10, $x);     // horizontal distance between poles
+        $dx       = mt_rand(intval($x / 10), intval($x));     // horizontal distance between poles
         $y        = mt_rand(20, $this->image_height - 20);  // random y coord
         $dy       = mt_rand(20, round($this->image_height * 0.7, 0)); // y distance
         $minY     = 20;                                     // minimum y coordinate
         $maxY     = $this->image_height - 20;               // maximum y cooddinate
 
         // make array of poles AKA attractor points
-        for ($i = 0; $i < $numpoles; ++ $i) {
-            $px[$i]  = ($x + ($dx * $i)) % $maxX;
+		for ($i = 0; $i < $numpoles; ++ $i) {
+            $px[$i]  = (intval($x) + ($dx * $i)) % intval($maxX);
             $py[$i]  = ($y + ($dy * $i)) % $maxY + $minY;
             $rad[$i] = mt_rand($this->image_height * 0.4, $this->image_height * 0.8);
             $tmp     = ((- $this->frand()) * 0.15) - .15;
@@ -2044,7 +2051,7 @@ class Securimage
 
             $theta = ($this->frand() - 0.5) * M_PI * 0.33;
             $w = $this->image_width;
-            $len = mt_rand($w * 0.4, $w * 0.7);
+            $len = mt_rand(intval($w * 0.4), intval($w * 0.7));
             $lwid = mt_rand(0, 2);
 
             $k = $this->frand() * 0.6 + 0.2;
