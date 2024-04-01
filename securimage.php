@@ -1061,7 +1061,7 @@ class Securimage
                 }
             }
 
-            $this->validate($captchaId);
+            $correct_code = $this->validate($captchaId, $code_entered);
         } else {
             trigger_error(
                 'No captcha ID supplied to Securimage::check(). ' .
@@ -2340,13 +2340,14 @@ class Securimage
      * Checks the entered code against the value stored in the session and/or database (if configured).  Handles case sensitivity.
      * Also removes the code from session/database if the code was entered correctly to prevent re-use attack.
      *
-     * This function does not return a value.
+     * This function return TRUE if the code is correct. False otherwise.
      *
      * @see Securimage::$correct_code 'correct_code' property
      */
-    protected function validate($captchaId)
+    protected function validate($captchaId, $code_entered)
     {
-        $code = null;
+		$code = null;
+		$retval = false;
 
         if (!$this->code) {
             $code = $this->getCode();
@@ -2380,7 +2381,6 @@ class Securimage
         $code_entered = trim( (($this->case_sensitive) ? $code_entered
                                                        : strtolower($code_entered))
                         );
-        $this->correct_code = false;
 
         if ($code != '') {
             if (strpos($code, ' ') !== false) {
@@ -2390,11 +2390,12 @@ class Securimage
             }
 
             if ((string)$code === (string)$code_entered) {
-                $this->correct_code = true;
+                $retval = true;
 
                 $this->deleteData($captchaId);
             }
-        }
+		}
+		return $retval;
     }
 
     /**
