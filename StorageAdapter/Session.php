@@ -39,16 +39,17 @@ class Session implements AdapterInterface
 
         return false;
     }
-
+    
     public function get($captchaId, $what = null)
     {
         if (isset($_SESSION['securimage_data'][$captchaId])) {
-            return unserialize($_SESSION['securimage_data'][$captchaId]);
+            $captchaInfo = $_SESSION['securimage_data'][$captchaId];
+            return is_string($captchaInfo) ? unserialize($captchaInfo) : null;
         }
-
+    
         return null;
     }
-
+    
     public function delete($captchaId)
     {
         unset($_SESSION['securimage_data'][$captchaId]);
